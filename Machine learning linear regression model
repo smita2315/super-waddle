@@ -1,0 +1,49 @@
+# Importing all libraries required in this notebook
+import pandas as pd
+import numpy as np  
+import matplotlib.pyplot as plt  
+%matplotlib inline
+from sklearn.linear_model import LinearRegression
+
+# Reading data from the device
+data = pd.read_csv("student_scores.csv")
+data.head()
+
+data.shape
+
+data.isnull()data.plot(kind="scatter", x="Hours", y="Scores")
+
+plt.title('Hours vs Percentage\n')  
+plt.show()
+
+#correlation matrix
+data.corr()
+X = pd.DataFrame(data['Hours'])
+y = pd.DataFrame(data['Scores'])
+
+from sklearn.model_selection import train_test_split  
+X_train, X_test, y_train, y_test = train_test_split(X, y, 
+                            test_size=0.2, random_state=0) 
+lm = LinearRegression()
+model = lm.fit(X_train, y_train)
+
+model.coef_
+
+model.intercept_
+
+# Plotting the regression line
+line = model.coef_*X+model.intercept_
+
+# Plotting for the test data
+plt.scatter(X, y)
+plt.plot(X,line,color='red')
+plt.title('Hours vs Percentage\n')  
+plt.xlabel('Hours Studied')  
+plt.ylabel('Percentage Score')  
+plt.show()
+
+model.score(X, y)
+
+Hours_new = 9.25
+Predict_Score = lm.predict([[Hours_new]])
+print("If a studnet studies for 9.25 hrs then the score predicted is: {}". format(Predict_Score[0])) 
